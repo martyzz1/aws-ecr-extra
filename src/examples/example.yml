@@ -3,7 +3,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    aws-ecr-enhanced: martyzz1/aws-ecr-enhanced@1.0.0
+    aws-ecr-extra: martyzz1/aws-ecr-extra@1.0.0
 jobs:
   build-image:
     machine:
@@ -15,11 +15,11 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
           docker_layer_caching: true
-      -  aws-ecr-enhanced/build-image-with-local-tags:
+      -  aws-ecr-extra/build-image-with-local-tags:
           repo: "myrepo/myimage"
           dockerfile: Dockerfile
           tag: "${FULL_IMAGE_TAG},$(git rev-parse HEAD),${CIRCLE_BRANCH}"  # default - latest
-      -  aws-ecr-enhanced/save-image-with-local-tags:
+      -  aws-ecr-extra/save-image-with-local-tags:
           repo: "myrepo/myimage"
           dockerfile: Dockerfile
           tag: "${FULL_IMAGE_TAG},$(git rev-parse HEAD),${CIRCLE_BRANCH}"  # default - latest
@@ -35,7 +35,7 @@ jobs:
     environment:
       FULL_IMAGE_TAG: "1.0.123"
     steps:
-      - aws-ecr-enhanced/load-and-push-image:
+      - aws-ecr-extra/load-and-push-image:
           repo: "myrepo/myimage"
           image-file: /tmp/workspace/image.tar
           dockerfile: Dockerfile

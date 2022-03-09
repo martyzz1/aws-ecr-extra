@@ -6,7 +6,7 @@ description: >
 
 # This information will be displayed in the orb registry and is not mandatory.
 display:
-  source_url: "https://www.github.com/martyzz1/aws-ecr-enhanced"
+  source_url: "https://www.github.com/martyzz1/aws-ecr-extra"
 
 orbs:
   aws-ecr: circleci/aws-ecr@7.3.0
