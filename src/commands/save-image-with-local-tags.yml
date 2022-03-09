@@ -23,5 +23,7 @@ steps:
           docker_tag_args="$docker_tag_args \"<<parameters.repo>>:$tag\""
         done
 
+        echo "docker save --output \"image.tar\" $docker_tag_args"
+
         docker save --output "<< parameters.image-file >>" $docker_tag_args
       name: Save and tag output for the given tags
