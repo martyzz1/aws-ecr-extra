@@ -16,14 +16,14 @@ parameters:
 
 steps:
   - run:
+      name: Save and tag output for the given tags
       command: |
-        docker_tag_args=""
+        TAGS=()
+
         IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
         for tag in "${DOCKER_TAGS[@]}"; do
-          docker_tag_args="$docker_tag_args \"<<parameters.repo>>:$tag\""
+          TAGS+=("<<parameters.repo>>:$tag")
         done
 
-        echo "docker save --output \"image.tar\" $docker_tag_args"
-
-        docker save --output "<< parameters.image-file >>" $docker_tag_args
-      name: Save and tag output for the given tags
+        echo "docker save --output \"image.tar\" ${TAGS[@]}"
+        docker save --output "<< parameters.image-file >>" ${TAGS[@]}
