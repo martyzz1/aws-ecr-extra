@@ -1,0 +1,27 @@
+description: Save a local tar image of a container image for a specific set of tags
+parameters:
+  repo:
+    description: Name of an Amazon ECR repository
+    type: string
+  tag:
+    default: latest
+    description: A comma-separated string containing docker image tags (default = latest)
+    type: string
+  image-file:
+    default: '/tmp/workspace/image.tar'
+    description: >-
+      Path to your image.tar file.
+      Defaults to '/tmp/workspace/image.tar'.
+    type: string
+
+steps:
+  - run:
+      command: |
+        docker_tag_args=""
+        IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
+        for tag in "${DOCKER_TAGS[@]}"; do
+          docker_tag_args="$docker_tag_args \"<<parameters.repo>>:$tag\""
+        done
+
+        docker save --output "<< parameters.image-file >>" $docker_tag_args
+      name: Save and tag output for the given tags
