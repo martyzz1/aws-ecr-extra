@@ -1,0 +1,11 @@
+description: >
+  Load a previously built image. from the specified tar file
+parameters:
+  image-file:
+    default: '/tmp/workspace/image.tar'
+    description: >-
+      Path to your image.tar file.
+      Defaults to '/tmp/workspace/image.tar'.
+    type: string
+steps:
+  - run: docker load --input << parameters.image-file >>

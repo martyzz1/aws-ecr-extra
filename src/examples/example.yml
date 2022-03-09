@@ -1,13 +1,63 @@
 description: >
-  Sample example description.
-# Provide a use-case based example for using this orb.
-# Everything in the `usage` section will be displayed in the orb registry.
-# Comments are not retained.
+  Sample load-and-push-container-to-aws workflow
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
-  workflows:
-    use-my-orb:
-      jobs:
-        - <orb-name>/<job-name>
+    aws-ecr-enhanced: martyzz1/aws-ecr-enhanced@1.0.0
+jobs:
+  build-image:
+    machine:
+      image: ubuntu-2004:current
+    environment:
+      FULL_IMAGE_TAG: "1.0.123"
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
+      -  aws-ecr-enhanced/build-image-with-local-tags:
+          repo: "myrepo/myimage"
+          dockerfile: Dockerfile
+          tag: "${FULL_IMAGE_TAG},$(git rev-parse HEAD),${CIRCLE_BRANCH}"  # default - latest
+      -  aws-ecr-enhanced/save-image-with-local-tags:
+          repo: "myrepo/myimage"
+          dockerfile: Dockerfile
+          tag: "${FULL_IMAGE_TAG},$(git rev-parse HEAD),${CIRCLE_BRANCH}"  # default - latest
+          image-file: image.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+
+  load-and-push-container-to-aws:
+    machine:
+      image: ubuntu-2004:current
+    environment:
+      FULL_IMAGE_TAG: "1.0.123"
+    steps:
+      - aws-ecr-enhanced/load-and-push-image:
+          repo: "myrepo/myimage"
+          image-file: /tmp/workspace/image.tar
+          dockerfile: Dockerfile
+          tag: "${FULL_IMAGE_TAG},$(git rev-parse HEAD),${CIRCLE_BRANCH}"
+          create-repo: true
+          remote-docker-layer-caching: true
+
+workflows:
+  build_test_and_push_image:
+    jobs:
+      - build-image:
+          context:
+            - Build Credentials
+      - load-and-push-container-to-aws:
+          context:
+            - Build Credentials
+            - Staging AWS ECR
+          requires:
+            - build-image
+      - load-and-push-container-to-aws:
+          context:
+            - Build Credentials
+            - Production AWS ECR
+          requires:
+            - build-image

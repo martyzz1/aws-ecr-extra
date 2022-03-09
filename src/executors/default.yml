@@ -1,11 +1,19 @@
 description: >
-  This is a sample executor using Docker and Node.
-docker:
-  - image: 'cimg/node:<<parameters.tag>>'
+  CircleCI's Ubuntu-based machine executor VM:
+  https://circleci.com/docs/2.0/executor-types/#using-machine
 parameters:
-  tag:
-    default: lts
-    description: >
-      Pick a specific circleci/node image variant:
-      https://hub.docker.com/r/cimg/node/tags
+  image:
     type: string
+    default: ubuntu-2004:202010-01
+  use-docker-layer-caching:
+    type: boolean
+    default: false
+  resource-class:
+    type: string
+    default: medium
+
+machine:
+  image: <<parameters.image>>
+  docker_layer_caching: <<parameters.use-docker-layer-caching>>
+
+resource_class: <<parameters.resource-class>>

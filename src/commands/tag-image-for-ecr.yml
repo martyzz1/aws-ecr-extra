@@ -1,0 +1,24 @@
+description: Tag a local container image for a specific Amazon ECR registry
+parameters:
+  account-url:
+    default: AWS_ECR_ACCOUNT_URL
+    description: >
+      Env var storing Amazon ECR account URL that maps to an AWS account, e.g.
+      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com defaults to
+      AWS_ECR_ACCOUNT_URL
+    type: env_var_name
+  repo:
+    description: Name of an Amazon ECR repository
+    type: string
+  tag:
+    default: latest
+    description: A comma-separated string containing docker image tags (default = latest)
+    type: string
+steps:
+  - run:
+      command: |
+        IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
+        for tag in "${DOCKER_TAGS[@]}"; do
+          docker tag <<parameters.repo>>:${tag} $<<parameters.account-url>>/<<parameters.repo>>:${tag}
+        done
+      name: Tag image for a given Amazon ECR
