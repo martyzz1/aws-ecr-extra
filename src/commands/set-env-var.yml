@@ -1,0 +1,21 @@
+parameters:
+  env-var-file:
+    default: 'custom-env-vars'
+    description: >-
+      Path to a custom env var file which will be passed to >> $BASH_ENV
+      Ideal for passing environment variables from earlier jobs
+      Most useful for Image tagging
+      Defaults to 'custom-env-vars'.
+    type: string
+  env-var:
+    description: Envrionment Variable Name
+    type: string
+  env-value:
+    description: Envrionment Variable Value
+    type: string
+
+steps:
+  - run:
+      name: "Preserve environment variable"
+      command: |
+        echo "export << parameters.env-var >>='<< parameters.env-value >>'" >> << parameters.env-var-file >>
