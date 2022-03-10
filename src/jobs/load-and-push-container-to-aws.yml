@@ -113,10 +113,7 @@ parameters:
       to the working directory. Defaults to '.' (the working directory)
 # machine:
 #   image: ubuntu-2004:current
-docker:
-  - image: cimg/base:2022.03
-environment:
-  <<: *env_vars
+executor: <<parameters.executor>>
 steps:
   - when:
       condition: <<parameters.checkout>>

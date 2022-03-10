@@ -13,11 +13,7 @@ parameters:
       Base image tag Number
       Defaults to '1.0'.
     type: string
-docker:
-  - image: cimg/base:2022.03
-environment:
-  <<: *env_vars
-
+executor: <<parameters.executor>>
 steps:
   - checkout
   - run:
