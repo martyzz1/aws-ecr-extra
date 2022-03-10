@@ -7,6 +7,10 @@ parameters:
       Most useful for Image tagging
       Defaults to 'custom-env-vars'.
     type: string
+  executor:
+    type: executor
+    default: default
+    description: executor to use for this job
   image-tag:
     default: "1.0"
     description: >-

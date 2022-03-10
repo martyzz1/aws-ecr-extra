@@ -191,7 +191,7 @@ steps:
   # - setup_remote_docker:
   #     version: 19.03.13
   #     docker_layer_caching: true
-  -  aws-ecr-extra/build-image-with-local-tags:
+  -  build-image-with-local-tags:
       account-url: <<parameters.account-url>>
       aws-access-key-id: <<parameters.aws-access-key-id>>
       aws-secret-access-key: <<parameters.aws-secret-access-key>>
@@ -206,7 +206,7 @@ steps:
       skip-when-tags-exist: <<parameters.skip-when-tags-exist>>
       tag: <<parameters.tag>>
 
-  -  aws-ecr-extra/save-image-with-local-tags:
+  -  save-image-with-local-tags:
       repo: <<parameters.repo>>
       image-file: <<parameters.image-file>>
       tag: <<parameters.tag>>
