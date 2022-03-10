@@ -78,10 +78,10 @@ parameters:
       Most useful for Image tagging
       Defaults to '/tmp/workspace/custom-env-vars'.
     type: string
-  # executor:
-  #   type: executor
-  #   default: default
-  #   description: executor to use for this job
+  executor:
+     type: executor
+     default: default
+     description: executor to use for this job
   extra-build-args:
     type: string
     default: ""
