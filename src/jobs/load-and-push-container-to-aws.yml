@@ -115,8 +115,6 @@ parameters:
     description: >
       Workspace root path that is either an absolute path or a path relative
       to the working directory. Defaults to '.' (the working directory)
-# machine:
-#   image: ubuntu-2004:current
 executor: <<parameters.executor>>
 steps:
   - when:
