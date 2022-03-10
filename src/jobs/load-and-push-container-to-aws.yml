@@ -1,0 +1,166 @@
+parameters:
+  account-url:
+    default: AWS_ECR_ACCOUNT_URL
+    description: >
+      Env var storing Amazon ECR account URL that maps to an AWS account, e.g.
+      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com defaults to
+      AWS_ECR_ACCOUNT_URL
+    type: env_var_name
+  attach-workspace:
+    type: boolean
+    default: false
+    description: >
+      Boolean for whether or not to attach to an existing workspace. Default
+      is false.
+  aws-access-key-id:
+    default: AWS_ACCESS_KEY_ID
+    description: >
+      AWS access key id for IAM role. Set this to the name of the environment
+      variable you will set to hold this value, i.e. AWS_ACCESS_KEY.
+    type: env_var_name
+  aws-secret-access-key:
+    default: AWS_SECRET_ACCESS_KEY
+    description: >
+      AWS secret key for IAM role. Set this to the name of the environment
+      variable you will set to hold this value, i.e. AWS_SECRET_ACCESS_KEY.
+    type: env_var_name
+  checkout:
+    default: true
+    description: |
+      Boolean for whether or not to checkout as a first step. Default is true.
+    type: boolean
+  create-repo:
+    default: false
+    description: Should the repo be created if it does not exist?
+    type: boolean
+  docker-login:
+    default: false
+    description: |
+      Enable dockerhub authentication. Defaults to false.
+    type: boolean
+  dockerhub-password:
+    default: DOCKERHUB_PASSWORD
+    description: >
+      Dockerhub password to be configured. Set this to the name of the
+      environment variable you will set to hold this value, i.e.
+      DOCKERHUB_PASSWORD.
+    type: env_var_name
+  dockerhub-username:
+    default: DOCKERHUB_USERNAME
+    description: >
+      Dockerhub username to be configured. Set this to the name of the
+      environment variable you will set to hold this value, i.e.
+      DOCKERHUB_USERNAME.
+    type: env_var_name
+  env-var-file:
+    default: '/tmp/workspace/custom-env-vars'
+    description: >-
+      Path to a custom env var file which will be passed to >> $BASH_ENV
+      Ideal for passing environment variables from earlier jobs
+      Most useful for Image tagging
+      Defaults to '/tmp/workspace/custom-env-vars'.
+    type: string
+  image-file:
+    default: '/tmp/workspace/image.tar'
+    description: >-
+      Path to your image.tar file.
+      Defaults to '/tmp/workspace/image.tar'.
+    type: string
+  profile-name:
+    default: default
+    description: AWS profile name to be configured.
+    type: string
+  region:
+    default: AWS_REGION
+    description: >
+      Name of env var storing your AWS region information, defaults to
+      AWS_REGION
+    type: env_var_name
+  remote-docker-layer-caching:
+    default: false
+    description: >
+      Enable Docker layer caching if using remote Docker engine. Defaults to
+      false.
+    type: boolean
+  remote-docker-version:
+    default: 19.03.13
+    description: Specific remote docker version
+    type: string
+  repo:
+    description: Name of an Amazon ECR repository
+    type: string
+  repo-scan-on-push:
+    default: true
+    description: Should the created repo be security scanned on push?
+    type: boolean
+  setup-remote-docker:
+    default: false
+    description: >
+      Setup and use CircleCI's remote Docker environment for Docker and
+      docker-compose commands? Not required if using the default executor
+    type: boolean
+  tag:
+    default: latest
+    description: >-
+      A comma-separated string containing docker image tags to build and push
+      (default = latest)
+    type: string
+  workspace-root:
+    type: string
+    default: "."
+    description: >
+      Workspace root path that is either an absolute path or a path relative
+      to the working directory. Defaults to '.' (the working directory)
+# machine:
+#   image: ubuntu-2004:current
+docker:
+  - image: cimg/base:2022.03
+environment:
+  <<: *env_vars
+steps:
+  - when:
+      condition: <<parameters.checkout>>
+      steps:
+        - checkout
+  - when:
+      condition: <<parameters.attach-workspace>>
+      steps:
+        - attach_workspace:
+            at: <<parameters.workspace-root>>
+  - when:
+      condition: <<parameters.env-var-file>>
+      steps:
+        - run:
+            name: Restore custom env vars if necessary
+            command: |
+              if [ -e "<<parameters.env-var-file>>" ]; then
+                cat <<parameters.env-var-file>> >> $BASH_ENV
+                else
+                  echo "no custom env-var-file found. skipping"
+                fi
+  - when:
+      condition: <<parameters.setup-remote-docker>>
+      steps:
+        - setup_remote_docker:
+            docker_layer_caching: <<parameters.remote-docker-layer-caching>>
+            version: <<parameters.remote-docker-version>>
+
+  - aws-ecr-extra/load-and-push-image:
+      account-url: <<parameters.account-url>>
+      aws-access-key-id: <<parameters.aws-access-key-id>>
+      aws-secret-access-key: <<parameters.aws-secret-access-key>>
+      checkout: <<parameters.checkout>>
+      create-repo: <<parameters.create-repo>>
+      docker-login: <<parameters.docker-login>>
+      dockerhub-password: <<parameters.dockerhub-password>>
+      dockerhub-username: <<parameters.dockerhub-username>>
+      env-var-file: <<parameters.env-var-file>>
+      image-file: <<parameters.image-file>>
+      profile-name: <<parameters.profile-name>>
+      region: <<parameters.region>>
+      remote-docker-layer-caching: <<parameters.remote-docker-layer-caching>>
+      remote-docker-version: <<parameters.remote-docker-version>>
+      repo: <<parameters.repo>>
+      repo-scan-on-push: <<parameters.repo-scan-on-push>>
+      setup-remote-docker: <<parameters.setup-remote-docker>>
+      tag: <<parameters.tag>>
