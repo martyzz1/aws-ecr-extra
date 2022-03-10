@@ -1,4 +1,10 @@
 parameters:
+  attach-workspace:
+    type: boolean
+    default: false
+    description: >
+      Boolean for whether or not to attach to an existing workspace. Default
+      is false.
   env-var-file:
     default: 'custom-env-vars'
     description: >-
@@ -24,8 +30,20 @@ parameters:
       Store the current env-var-file using persist_to_workspace.
       Set to false if setting multiple env vars in a job, and set to true on the last one.
     default: false
+  workspace-root:
+    type: string
+    default: "."
+    description: >
+      Workspace root path that is either an absolute path or a path relative
+      to the working directory. Defaults to '.' (the working directory)
+
 executor: <<parameters.executor>>
 steps:
+  - when:
+      condition: <<parameters.attach-workspace>>
+      steps:
+        - attach_workspace:
+            at: <<parameters.workspace-root>>
   - run:
       name: "Preserve environment variable"
       command: |
@@ -34,6 +52,6 @@ steps:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
-            root: .
+            root: < parameters.workspace-root >>
             paths:
               - << parameters.env-var-file >>

@@ -29,7 +29,8 @@ steps:
   - run:
       name: "Persist CIRCLE_BUILD_NUM environment variables"
       command: |
-        echo "export FULL_IMAGE_TAG='<< parameters.image-tag >>.${CIRCLE_BUILD_NUM}'" >> << parameters.env-var-file >>
+        echo "export FULL_IMAGE_TAG='<< parameters.full-image-tag >>'" >> << parameters.env-var-file >>
+        echo "export REPO='<< parameters.repo >>'" >> << parameters.env-var-file >>
    - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
