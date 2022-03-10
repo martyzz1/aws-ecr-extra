@@ -11,12 +11,6 @@ parameters:
     type: executor
     default: default
     description: executor to use for this job
-  image-tag:
-    default: "1.0"
-    description: >-
-      Base image tag Number
-      Defaults to '1.0'.
-    type: string
   full-image-tag:
     description: >-
       String to be used for the FULL_IMAGE_TAG Env variable value
