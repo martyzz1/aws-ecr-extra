@@ -17,11 +17,19 @@ parameters:
       Base image tag Number
       Defaults to '1.0'.
     type: string
+  full-image-tag:
+    description: >-
+      String to be used for the FULL_IMAGE_TAG Env variable value
+    type: string
   persist-to-workspace:
     description: >-
       Store the current env-var-file using persist_to_workspace.
       Set to false if setting multiple env vars in a job, and set to true on the last one.
     default: true
+    type: boolean
+  repo:
+    description: Name of an Amazon ECR repository
+    type: string
 
 executor: <<parameters.executor>>
 steps:
@@ -31,7 +39,7 @@ steps:
       command: |
         echo "export FULL_IMAGE_TAG='<< parameters.full-image-tag >>'" >> << parameters.env-var-file >>
         echo "export REPO='<< parameters.repo >>'" >> << parameters.env-var-file >>
-   - when:
+  - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
