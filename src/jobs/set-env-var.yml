@@ -23,6 +23,7 @@ parameters:
     description: >-
       Store the current env-var-file using persist_to_workspace.
       Set to false if setting multiple env vars in a job, and set to true on the last one.
+    default: false
 executor: <<parameters.executor>>
 steps:
   - run:
