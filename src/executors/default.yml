@@ -12,7 +12,7 @@ parameters:
     type: string
     default: medium
 
-machine:
+docker:
   image: <<parameters.image>>
   docker_layer_caching: <<parameters.use-docker-layer-caching>>
 
