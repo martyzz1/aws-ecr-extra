@@ -33,17 +33,6 @@ steps:
       command: |
         echo "export FULL_IMAGE_TAG='<< parameters.full-image-tag >>'" >> << parameters.env-var-file >>
         echo "export REPO='<< parameters.repo >>'" >> << parameters.env-var-file >>
-  - run:
-      name: get the workspace root and relative path
-      command: |
-        DIRECTORY="<<parameters.env-var-file>>"
-        REMAINING_DIRECTORY=$(echo ${DIRECTORY#/})
-        WORKING_REMAINING_DIRECTORY=$(echo ${CIRCLE_WORKING_DIRECTORY#/})
-        echo "export WORKING_REMAINING_DIRECTORY='${WORKING_REMAINING_DIRECTORY}'" >> <<parameters.env-var-file>>
-        echo "export REMAINING_DIRECTORY='${REMAINING_DIRECTORY}'" >> <<parameters.env-var-file>>
-        cat <<parameters.env-var-file>> >> $BASH_ENV
-        cat <<parameters.env-var-file>>
-
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
