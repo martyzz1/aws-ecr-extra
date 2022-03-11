@@ -37,6 +37,6 @@ steps:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
-            root: .
+            root: /
             paths:
               - << parameters.env-var-file >>
