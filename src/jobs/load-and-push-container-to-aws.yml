@@ -25,7 +25,7 @@ parameters:
       variable you will set to hold this value, i.e. AWS_SECRET_ACCESS_KEY.
     type: env_var_name
   checkout:
-    default: true
+    default: false
     description: |
       Boolean for whether or not to checkout as a first step. Default is true.
     type: boolean
