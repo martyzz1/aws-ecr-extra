@@ -15,6 +15,6 @@ parameters:
 
 # docker:
 machine:
-  - image: <<parameters.image>>
+  image: <<parameters.image>>
 
 resource_class: <<parameters.resource-class>>
