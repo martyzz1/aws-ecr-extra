@@ -19,6 +19,9 @@ steps:
       command: |
         IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
         for tag in "${DOCKER_TAGS[@]}"; do
+          echo "Tagging with tag $tag"
+          echo "repo  <<parameters.repo>>"
+          echo "account-url  <<parameters.account-url>>"
           docker tag <<parameters.repo>>:${tag} $<<parameters.account-url>>/<<parameters.repo>>:${tag}
         done
       name: Tag image for a given Amazon ECR
