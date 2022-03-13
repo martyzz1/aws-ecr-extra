@@ -132,11 +132,14 @@ steps:
         - run:
             name: Restore custom env vars if necessary
             command: |
-              if [ -e "<<parameters.env-var-file>>" ]; then
+              if [ -e "<<parameters.env-var-file>>" ]; then                                                             echo "Restoring custom vars"
+                env|grep IMAGE
                 cat <<parameters.env-var-file>> >> $BASH_ENV
-                else
-                  echo "no custom env-var-file found. skipping"
-                fi
+                env|grep IMAGE
+                cat <<parameters.env-var-file>>
+              else
+                echo "no custom env-var-file found. skipping"
+              fi
   # - when:
   #     condition: <<parameters.setup-remote-docker>>
   #     steps:
