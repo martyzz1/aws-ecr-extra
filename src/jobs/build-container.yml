@@ -177,12 +177,12 @@ steps:
               else
                 echo "no custom env-var-file found. skipping"
               fi
-  - when:
-      condition: <<parameters.setup-remote-docker>>
-      steps:
-        - setup_remote_docker:
-            docker_layer_caching: <<parameters.remote-docker-layer-caching>>
-            version: <<parameters.remote-docker-version>>
+  # - when:
+  #     condition: <<parameters.setup-remote-docker>>
+  #     steps:
+  #       - setup_remote_docker:
+  #           docker_layer_caching: <<parameters.remote-docker-layer-caching>>
+  #           version: <<parameters.remote-docker-version>>
   # - checkout
   # - run:
   #     name: "Persist CIRCLE_BUILD_NUM environment variables"
