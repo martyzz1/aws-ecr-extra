@@ -53,12 +53,12 @@ parameters:
       DOCKERHUB_USERNAME.
     type: env_var_name
   env-var-file:
-    default: '/tmp/workspace/custom-env-vars'
+    default: 'custom-env-vars'
     description: >-
-      Path to a custom env var file which will be passed to >> $BASH_ENV
+      Name of a custom env var file which will be passed to >> $BASH_ENV
       Ideal for passing environment variables from earlier jobs
       Most useful for Image tagging
-      Defaults to '/tmp/workspace/custom-env-vars'.
+      Defaults to 'custom-env-vars'.
     type: string
   executor:
     type: executor
@@ -126,8 +126,8 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
-  - restore-custom-env-var:
-      env-var-file: <<parameters.env-var-file>>
+        - restore-custom-env-var:
+            env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
   # - when:
   #     condition: <<parameters.setup-remote-docker>>
   #     steps:

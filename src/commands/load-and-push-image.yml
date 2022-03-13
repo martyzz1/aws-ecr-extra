@@ -135,8 +135,6 @@ steps:
   #       - setup_remote_docker:
   #           docker_layer_caching: <<parameters.remote-docker-layer-caching>>
   #           version: <<parameters.remote-docker-version>>
-  - restore-custom-env-var:
-      env-var-file: <<parameters.env-var-file>>
   - aws-ecr/ecr-login:
       account-url: <<parameters.account-url>>
       aws-access-key-id: <<parameters.aws-access-key-id>>
