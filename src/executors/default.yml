@@ -13,7 +13,8 @@ parameters:
     type: string
     default: medium
 
-docker:
+# docker:
+machine:
   - image: <<parameters.image>>
 
 resource_class: <<parameters.resource-class>>
