@@ -17,9 +17,7 @@ steps:
             command: |
               if [ -e "<<parameters.env-var-file>>" ]; then
                 echo "Restoring custom vars"
-                env|grep IMAGE
                 cat <<parameters.env-var-file>> >> $BASH_ENV
-                env|grep IMAGE
                 cat <<parameters.env-var-file>>
               else
                 echo "no custom env-var-file found. skipping"
