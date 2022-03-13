@@ -126,20 +126,8 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
-  - when:
-      condition: <<parameters.env-var-file>>
-      steps:
-        - run:
-            name: Restore custom env vars if necessary
-            command: |
-              if [ -e "<<parameters.env-var-file>>" ]; then                                                             echo "Restoring custom vars"
-                env|grep IMAGE
-                cat <<parameters.env-var-file>> >> $BASH_ENV
-                env|grep IMAGE
-                cat <<parameters.env-var-file>>
-              else
-                echo "no custom env-var-file found. skipping"
-              fi
+  - restore-custom-env-var:
+      env-var-file: <<parameters.env-var-file>>
   # - when:
   #     condition: <<parameters.setup-remote-docker>>
   #     steps:
