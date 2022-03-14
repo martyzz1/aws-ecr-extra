@@ -108,33 +108,6 @@ parameters:
       (default = latest)
     type: string
 steps:
-  # - when:
-  #     condition: <<parameters.checkout>>
-  #     steps:
-  #       - checkout
-  # - when:
-  #     condition: <<parameters.attach-workspace>>
-  #     steps:
-  #       - attach_workspace:
-  #           at: <<parameters.workspace-root>>
-  # - when:
-  #     condition: <<parameters.env-var-file>>
-  #     steps:
-  #       - run:
-  #           name: Restore custom env vars if necessary
-  #           command: |
-  #             if [ -e "<<parameters.env-var-file>>"]; then
-  #               cat <<parameters.env-var-file>> >> $BASH_ENV
-  #             else
-  #               echo "no custom env-var-file found. skipping"
-  #             fi
-
-  # - when:
-  #     condition: <<parameters.setup-remote-docker>>
-  #     steps:
-  #       - setup_remote_docker:
-  #           docker_layer_caching: <<parameters.remote-docker-layer-caching>>
-  #           version: <<parameters.remote-docker-version>>
   - aws-ecr/ecr-login:
       account-url: <<parameters.account-url>>
       aws-access-key-id: <<parameters.aws-access-key-id>>
