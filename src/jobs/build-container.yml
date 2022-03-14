@@ -116,6 +116,12 @@ parameters:
     type: boolean
     default: false
     description: Whether to skip image building if all specified tags already exist in ECR
+  store-image-as-artifact:
+    default: true
+    description: |
+      Option to store the built image as an artifact.
+      Defaults to true
+    type: boolean
   tag:
     default: latest
     description: >-
@@ -182,3 +188,9 @@ steps:
       paths:
         - <<parameters.image-file>>
         # - new-env-vars
+  - when:
+      condition: <<parameters.store-image-as-artifact>>
+      steps:
+        - store_artifacts:
+            path: <<parameters.image-file>>
+            destination: <<parameters.repo>>

@@ -165,4 +165,4 @@ steps:
       steps:
         - store_artifacts:
             path: <<parameters.image-file>>
-            destination: <<parameters.repo>>-$FULL_IMAGE_TAG
+            destination: <<parameters.repo>>
