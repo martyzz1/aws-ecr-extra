@@ -117,10 +117,10 @@ parameters:
     default: false
     description: Whether to skip image building if all specified tags already exist in ECR
   store-image-as-artifact:
-    default: true
+    default: false
     description: |
       Option to store the built image as an artifact.
-      Defaults to true
+      Defaults to false
     type: boolean
   tag:
     default: latest
