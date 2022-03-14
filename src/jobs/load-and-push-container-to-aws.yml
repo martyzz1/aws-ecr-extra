@@ -104,10 +104,10 @@ parameters:
       docker-compose commands? Not required if using the default executor
     type: boolean
   store-image-as-artifact:
-    default: true
+    default: false
     description: |
       Option to store the built image as an artifact.
-      Defaults to true
+      Defaults to false
     type: boolean
   tag:
     default: latest
