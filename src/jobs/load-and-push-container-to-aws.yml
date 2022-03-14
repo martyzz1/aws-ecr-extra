@@ -103,6 +103,12 @@ parameters:
       Setup and use CircleCI's remote Docker environment for Docker and
       docker-compose commands? Not required if using the default executor
     type: boolean
+  store-image-as-artifact:
+    default: true
+    description: |
+      Option to store the built image as an artifact.
+      Defaults to true
+    type: boolean
   tag:
     default: latest
     description: >-
@@ -154,3 +160,9 @@ steps:
       repo-scan-on-push: <<parameters.repo-scan-on-push>>
       setup-remote-docker: <<parameters.setup-remote-docker>>
       tag: <<parameters.tag>>
+  - when:
+      condition: <<parameters.store-image-as-artifact>>
+      steps:
+        - store_artifacts:
+            path: <<parameters.image-file>>
+            destination: <<parameters.repo>>-$FULL_IMAGE_TAG
