@@ -37,15 +37,6 @@ parameters:
     description: |
       Boolean for whether or not to checkout as a first step. Default is true.
     type: boolean
-  create-repo:
-    default: false
-    description: Should the repo be created if it does not exist?
-    type: boolean
-  docker-login:
-    default: false
-    description: |
-      Enable dockerhub authentication. Defaults to false.
-    type: boolean
   dockerfile:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
@@ -114,28 +105,12 @@ parameters:
       Name of env var storing your AWS region information, defaults to
       AWS_REGION
     type: env_var_name
-  remote-docker-layer-caching:
-    default: false
-    description: >
-      Enable Docker layer caching if using remote Docker engine. Defaults to
-      false.
-    type: boolean
-  remote-docker-version:
-    default: 19.03.13
-    description: Specific remote docker version
-    type: string
   repo:
     description: Name of an Amazon ECR repository
     type: string
   repo-scan-on-push:
     default: true
     description: Should the created repo be security scanned on push?
-    type: boolean
-  setup-remote-docker:
-    default: false
-    description: >
-      Setup and use CircleCI's remote Docker environment for Docker and
-      docker-compose commands? Not required if using the default executor
     type: boolean
   skip-when-tags-exist:
     type: boolean
