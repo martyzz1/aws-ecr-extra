@@ -121,12 +121,7 @@ parameters:
     description: >
       Workspace root path that is either an absolute path or a path relative
       to the working directory. Defaults to '.' (the working directory)
-  name:
-    type: string
-    default: "load-and-push-container-to-aws"
-    description: An optional job name that can be logged in circleci - useful if calling this job multiple times in one workflow
 executor: <<parameters.executor>>
-name: <<parameters.name>>
 steps:
   - when:
       condition: <<parameters.checkout>>
