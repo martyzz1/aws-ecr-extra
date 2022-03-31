@@ -43,10 +43,18 @@ steps:
       steps:
         - attach_workspace:
             at: <<parameters.workspace-root>>
-  - set-env-var:
-      env-var: << parameters.env-var >>
-      env-value: << parameters.env-value >>
-      env-var-file: << parameters.env-var-file >>
+        - set-env-var:
+            env-var: << parameters.env-var >>
+            env-value: << parameters.env-value >>
+            env-var-file: <<parameters.workspace-root>>/<< parameters.env-var-file >>
+  - when:
+      condition:
+        not: <<parameters.attach-workspace>>
+      steps:
+        - set-env-var:
+            env-var: << parameters.env-var >>
+            env-value: << parameters.env-value >>
+            env-var-file: << parameters.env-var-file >>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
