@@ -59,6 +59,6 @@ steps:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
-            root: < parameters.workspace-root >>
+            root: << parameters.workspace-root >>
             paths:
               - << parameters.env-var-file >>
