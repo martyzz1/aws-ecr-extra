@@ -18,15 +18,14 @@ workflows:
       - orb-tools/review:
           filters: *filters
           exclude: RC009
-      # - shellcheck/check:
-      #     filters: *filters
-      #     dir: ./src/scripts
+      - shellcheck/check:
+          filters: *filters
+          dir: ./src/scripts
       - orb-tools/publish:
           orb-name: martyzz1/aws-ecr-extra
           vcs-type: << pipeline.project.type >>
           requires:
-            [orb-tools/lint, orb-tools/review, orb-tools/pack]
-            # [orb-tools/lint, orb-tools/review, orb-tools/pack, shellcheck/check]
+            [orb-tools/lint, orb-tools/review, orb-tools/pack, shellcheck/check]
           # Use a context to hold your publishing token.
           context:
             - orb-publishing

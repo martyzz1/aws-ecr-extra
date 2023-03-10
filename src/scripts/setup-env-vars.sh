@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC1073,SC1009
-echo "export FULL_IMAGE_TAG='<< parameters.full-image-tag >>'" >> << parameters.env-var-file >>
-echo "export REPO='<< parameters.repo >>'" >> << parameters.env-var-file >>
-echo "export GIT_TAG='$(git rev-parse HEAD)'" >> << parameters.env-var-file >>
+# shellcheck disable=SC2129
+echo "export FULL_IMAGE_TAG='$FULL_IMAGE_TAG'" >> "$ENV_VAR_FILENAME"
+echo "export REPO='$REPO'" >> "$ENV_VAR_FILENAME"
+echo "export GIT_TAG='$(git rev-parse HEAD)'" >> "$ENV_VAR_FILENAME"

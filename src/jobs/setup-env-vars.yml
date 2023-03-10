@@ -27,6 +27,10 @@ parameters:
     type: string
 
 executor: <<parameters.executor>>
+environment:
+  ENV_VAR_FILENAME: << parameters.env-var-file >>
+  FULL_IMAGE_TAG: << parameters.full-image-tag >>
+  REPO: << parameters.repo >>
 steps:
   - checkout
   - run:
