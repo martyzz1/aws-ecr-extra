@@ -84,6 +84,7 @@ steps:
   - run:
       command: >
         registry_id=$(echo $<<parameters.account-url>> | sed "s;\..*;;g")
+        docker --version
 
         number_of_tags_in_ecr=0
 
