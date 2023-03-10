@@ -1,3 +1,4 @@
+description: Builds and pushes an image to AWS
 parameters:
   account-url:
     default: AWS_ECR_ACCOUNT_URL
