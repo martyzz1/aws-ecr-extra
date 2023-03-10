@@ -1,3 +1,4 @@
+description: Command to restore any custom ENV vars from a previous stage
 parameters:
   env-var-file:
     default: 'custom-env-vars'
