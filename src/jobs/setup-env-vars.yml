@@ -1,3 +1,4 @@
+description: Sets some standard persisstent env vars used throughout the build process
 parameters:
   env-var-file:
     default: 'custom-env-vars'
