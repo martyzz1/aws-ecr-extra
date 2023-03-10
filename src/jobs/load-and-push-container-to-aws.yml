@@ -1,3 +1,4 @@
+description: Loads an image from file and then pushes to AWS
 parameters:
   account-url:
     default: AWS_ECR_ACCOUNT_URL
