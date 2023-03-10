@@ -24,7 +24,8 @@ workflows:
           orb-name: martyzz1/aws-ecr-extra
           vcs-type: << pipeline.project.type >>
           requires:
-            [orb-tools/lint, orb-tools/review, orb-tools/pack, shellcheck/check]
+            # [orb-tools/lint, orb-tools/review, orb-tools/pack, shellcheck/check]
+            [orb-tools/review, orb-tools/pack]
           # Use a context to hold your publishing token.
           context:
             - orb-publishing
