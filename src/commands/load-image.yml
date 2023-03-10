@@ -8,4 +8,6 @@ parameters:
       Defaults to '/tmp/workspace/image.tar'.
     type: string
 steps:
-  - run: docker load --input << parameters.image-file >>
+  - run:
+      name: "Load Docker image from file"
+      command: docker load --input << parameters.image-file >>
