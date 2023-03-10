@@ -1,3 +1,4 @@
+description: Stores a variable to the persistent ENV vars for restoration in other steps
 parameters:
   attach-workspace:
     type: boolean
