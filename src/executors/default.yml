@@ -5,7 +5,7 @@ parameters:
   image:
     type: string
     # default: cimg/base:2022.03
-    default: ubuntu-2004:202010-01
+    default: ubuntu-2204:2023.02.1
   use-docker-layer-caching:
     type: boolean
     default: true
