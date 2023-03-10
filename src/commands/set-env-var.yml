@@ -1,3 +1,4 @@
+description: Stores an env var into persistent ENV storage
 parameters:
   env-var-file:
     default: 'custom-env-vars'
