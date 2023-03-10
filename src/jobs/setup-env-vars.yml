@@ -30,10 +30,7 @@ steps:
   - checkout
   - run:
       name: "Persist CIRCLE_BUILD_NUM environment variables"
-      command: |
-        echo "export FULL_IMAGE_TAG='<< parameters.full-image-tag >>'" >> << parameters.env-var-file >>
-        echo "export REPO='<< parameters.repo >>'" >> << parameters.env-var-file >>
-        echo "export GIT_TAG='$(git rev-parse HEAD)'" >> << parameters.env-var-file >>
+      command: <<include(scripts/setup-env-vars.sh)>>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
