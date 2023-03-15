@@ -34,7 +34,7 @@ environment:
 steps:
   - checkout
   - run:
-      name: "Persist CIRCLE_BUILD_NUM environment variables"
+      name: "Configure & Persist common environment variables"
       command: <<include(scripts/setup-env-vars.sh)>>
   - when:
       condition: <<parameters.persist-to-workspace>>
