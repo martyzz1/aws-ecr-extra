@@ -19,6 +19,6 @@ steps:
   - run:
       name: "Preserve environment variable"
       command: |
-        cat << parameters.env-var-file >>
+        # cat << parameters.env-var-file >>
         echo "export << parameters.env-var >>='<< parameters.env-value >>'" >> << parameters.env-var-file >>
         cat << parameters.env-var-file >>
