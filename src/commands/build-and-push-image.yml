@@ -110,22 +110,12 @@ parameters:
       Enable Docker layer caching if using remote Docker engine. Defaults to
       false.
     type: boolean
-  remote-docker-version:
-    default: 19.03.13
-    description: Specific remote docker version
-    type: string
   repo:
     description: Name of an Amazon ECR repository
     type: string
   repo-scan-on-push:
     default: true
     description: Should the created repo be security scanned on push?
-    type: boolean
-  setup-remote-docker:
-    default: false
-    description: >
-      Setup and use CircleCI's remote Docker environment for Docker and
-      docker-compose commands? Not required if using the default executor
     type: boolean
   skip-when-tags-exist:
     default: false

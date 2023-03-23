@@ -165,6 +165,12 @@ steps:
             at: <<parameters.workspace-root>>
         - restore-custom-env-var:
             env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
+  - when:
+      condition: <<parameters.setup-remote-docker>>
+      steps:
+        - setup_remote_docker:
+          version: <<parameters.remote-docker-version>>
+          docker_layer_caching: <<parameters.remote-docker-layer-caching>>
   - aws-ecr/ecr-login:
       account-url: <<parameters.account-url>>
       aws-access-key-id: <<parameters.aws-access-key-id>>
