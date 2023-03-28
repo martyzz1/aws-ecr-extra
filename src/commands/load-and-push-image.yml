@@ -73,11 +73,10 @@ parameters:
     description: AWS profile name to be configured.
     type: string
   region:
-    default: AWS_REGION
+    type: string
+    default: ${AWS_REGION}
     description: >
-      Name of env var storing your AWS region information, defaults to
-      AWS_REGION
-    type: env_var_name
+      AWS region of ECR repository. Defaults to environment variable ${AWS_REGION}
   remote-docker-layer-caching:
     default: false
     description: >
@@ -109,9 +108,6 @@ parameters:
     type: string
 steps:
   - aws-ecr/ecr-login:
-      account-url: <<parameters.account-url>>
-      aws-access-key-id: <<parameters.aws-access-key-id>>
-      aws-secret-access-key: <<parameters.aws-secret-access-key>>
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
   - when:

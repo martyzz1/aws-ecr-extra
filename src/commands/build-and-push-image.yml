@@ -130,10 +130,7 @@ parameters:
 steps:
   - aws-ecr/ecr-login:
       account-url: <<parameters.account-url>>
-      aws-access-key-id: <<parameters.aws-access-key-id>>
-      aws-secret-access-key: <<parameters.aws-secret-access-key>>
       profile-name: <<parameters.profile-name>>
-      region: <<parameters.region>>
   - when:
       condition: <<parameters.create-repo>>
       steps:
@@ -151,8 +148,6 @@ steps:
             $<<parameters.dockerhub-password>>
   -  build-image-with-local-tags:
       account-url: <<parameters.account-url>>
-      aws-access-key-id: <<parameters.aws-access-key-id>>
-      aws-secret-access-key: <<parameters.aws-secret-access-key>>
       dockerfile: <<parameters.dockerfile>>
       ecr-login: <<parameters.ecr-login>>
       extra-build-args: <<parameters.extra-build-args>>
