@@ -168,6 +168,7 @@ steps:
       no-output-timeout: <<parameters.no-output-timeout>>
       path: <<parameters.path>>
       profile-name: <<parameters.profile-name>>
+      registry-id: <<parameters.registry-id>>
       region: <<parameters.region>>
       repo: <<parameters.repo>>
       skip-when-tags-exist: <<parameters.skip-when-tags-exist>>
