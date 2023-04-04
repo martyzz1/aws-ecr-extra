@@ -1,18 +1,17 @@
 description: Builds and pushes an image to AWS
 parameters:
-  account-url:
-    default: AWS_ECR_ACCOUNT_URL
-    description: >
-      Env var storing Amazon ECR account URL that maps to an AWS account, e.g.
-      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com defaults to
-      AWS_ECR_ACCOUNT_URL
-    type: env_var_name
   attach-workspace:
     type: boolean
     default: false
     description: >
       Boolean for whether or not to attach to an existing workspace. Default
       is false.
+  registry-id:
+    type: env_var_name
+    default: AWS_ECR_REGISTRY_ID
+    description: >
+      The 12 digit AWS id associated with the ECR account.
+      This field is required
   aws-access-key-id:
     default: AWS_ACCESS_KEY_ID
     description: >
@@ -34,25 +33,6 @@ parameters:
     default: false
     description: Should the repo be created if it does not exist?
     type: boolean
-  docker-login:
-    default: false
-    description: |
-      Enable dockerhub authentication. Defaults to false.
-    type: boolean
-  dockerhub-password:
-    default: DOCKERHUB_PASSWORD
-    description: >
-      Dockerhub password to be configured. Set this to the name of the
-      environment variable you will set to hold this value, i.e.
-      DOCKERHUB_PASSWORD.
-    type: env_var_name
-  dockerhub-username:
-    default: DOCKERHUB_USERNAME
-    description: >
-      Dockerhub username to be configured. Set this to the name of the
-      environment variable you will set to hold this value, i.e.
-      DOCKERHUB_USERNAME.
-    type: env_var_name
   dockerfile:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
@@ -102,11 +82,10 @@ parameters:
     description: AWS profile name to be configured.
     type: string
   region:
-    default: AWS_REGION
+    type: string
+    default: ${AWS_REGION}
     description: >
-      Name of env var storing your AWS region information, defaults to
-      AWS_REGION
-    type: env_var_name
+      AWS region of ECR repository. Defaults to environment variable ${AWS_REGION}
   remote-docker-layer-caching:
     default: false
     description: >
@@ -114,7 +93,7 @@ parameters:
       false.
     type: boolean
   remote-docker-version:
-    default: 19.03.13
+    default: 20.10.18
     description: Specific remote docker version
     type: string
   repo:
@@ -179,12 +158,9 @@ steps:
   - aws-ecr/ecr-login:
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
-  - when:
-      condition: <<parameters.docker-login>>
-      steps:
-        - run: >
-            docker login -u $<<parameters.dockerhub-username>> -p
-            $<<parameters.dockerhub-password>>
+      registry-id: <<parameters.registry-id>>
+      aws-access-key-id: <<parameters.aws-access-key-id>>
+      aws-secret-access-key: <<parameters.aws-secret-access-key>>
   - build-image-with-local-tags:
       dockerfile: <<parameters.dockerfile>>
       ecr-login: <<parameters.ecr-login>>
@@ -207,11 +183,11 @@ steps:
             repo: <<parameters.repo>>
             repo-scan-on-push: <<parameters.repo-scan-on-push>>
   - tag-image-for-ecr:
-      account-url: <<parameters.account-url>>
+      region: <<parameters.region>>
       repo: <<parameters.repo>>
       tag: <<parameters.tag>>
   - aws-ecr/push-image:
-      account-url: <<parameters.account-url>>
+      region: <<parameters.region>>
       repo: <<parameters.repo>>
       tag: <<parameters.tag>>
   - when:

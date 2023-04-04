@@ -7,13 +7,12 @@ description: >
   (https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project)
   or in Contexts (https://circleci.com/docs/2.0/contexts).
 parameters:
-  account-url:
-    default: AWS_ECR_ACCOUNT_URL
-    description: >
-      Env var storing Amazon ECR account URL that maps to an AWS account, e.g.
-      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com defaults to
-      AWS_ECR_ACCOUNT_URL
+  registry-id:
     type: env_var_name
+    default: AWS_ECR_REGISTRY_ID
+    description: >
+      The 12 digit AWS id associated with the ECR account.
+      This field is required
   aws-access-key-id:
     default: AWS_ACCESS_KEY_ID
     description: >
@@ -99,11 +98,10 @@ parameters:
     description: AWS profile name to be configured.
     type: string
   region:
-    default: AWS_REGION
+    type: string
+    default: ${AWS_REGION}
     description: >
-      Name of env var storing your AWS region information, defaults to
-      AWS_REGION
-    type: env_var_name
+      AWS region of ECR repository. Defaults to environment variable ${AWS_REGION}
   remote-docker-layer-caching:
     default: false
     description: >
@@ -129,8 +127,9 @@ parameters:
     type: string
 steps:
   - aws-ecr/ecr-login:
-      account-url: <<parameters.account-url>>
       profile-name: <<parameters.profile-name>>
+      region: <<parameters.region>>
+      registry-id: <<parameters.registry-id>>
   - when:
       condition: <<parameters.create-repo>>
       steps:
@@ -147,7 +146,6 @@ steps:
             docker login -u $<<parameters.dockerhub-username>> -p
             $<<parameters.dockerhub-password>>
   -  build-image-with-local-tags:
-      account-url: <<parameters.account-url>>
       dockerfile: <<parameters.dockerfile>>
       ecr-login: <<parameters.ecr-login>>
       extra-build-args: <<parameters.extra-build-args>>
@@ -159,10 +157,11 @@ steps:
       skip-when-tags-exist: <<parameters.skip-when-tags-exist>>
       tag: <<parameters.tag>>
   - tag-image-for-ecr:
-      account-url: <<parameters.account-url>>
       repo: <<parameters.repo>>
       tag: <<parameters.tag>>
+      region: <<parameters.region>>
+      registry-id: <<parameters.registry-id>>
   - aws-ecr/push-image:
-      account-url: <<parameters.account-url>>
       repo: <<parameters.repo>>
+      registry-id: <<parameters.registry-id>>
       tag: <<parameters.tag>>

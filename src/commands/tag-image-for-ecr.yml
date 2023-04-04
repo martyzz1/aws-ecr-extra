@@ -1,12 +1,16 @@
 description: Tag a local container image for a specific Amazon ECR registry
 parameters:
-  account-url:
-    default: AWS_ECR_ACCOUNT_URL
-    description: >
-      Env var storing Amazon ECR account URL that maps to an AWS account, e.g.
-      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com defaults to
-      AWS_ECR_ACCOUNT_URL
+  registry-id:
     type: env_var_name
+    default: AWS_ECR_REGISTRY_ID
+    description: >
+      The 12 digit AWS id associated with the ECR account.
+      This field is required
+  region:
+    type: string
+    default: ${AWS_REGION}
+    description: >
+      AWS region of ECR repository. Defaults to environment variable ${AWS_REGION}
   repo:
     description: Name of an Amazon ECR repository
     type: string
@@ -15,13 +19,11 @@ parameters:
     description: A comma-separated string containing docker image tags (default = latest)
     type: string
 steps:
-  - run:
-      command: |
-        IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
-        for tag in "${DOCKER_TAGS[@]}"; do
-          echo "Tagging with tag $tag"
-          echo "repo  <<parameters.repo>>"
-          echo "account-url  <<parameters.account-url>>"
-          docker tag <<parameters.repo>>:${tag} $<<parameters.account-url>>/<<parameters.repo>>:${tag}
-        done
-      name: Tag image for a given Amazon ECR
+   - run:
+      name: Tag image for Amazon ECR
+      environment:
+        ORB_ENV_REGISTRY_ID: <<parameters.registry-id>>
+        ORB_EVAL_REGION: <<parameters.region>>
+        ORB_ENV_TAGS: <<parameters.tag>>
+        ORB_ENV_REPO: <<parameters.repo>>
+      command: <<include(scripts/tag-image-for-ecr.sh)>>

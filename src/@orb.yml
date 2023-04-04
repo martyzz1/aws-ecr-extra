@@ -9,4 +9,4 @@ display:
   source_url: "https://www.github.com/martyzz1/aws-ecr-extra"
 
 orbs:
-  aws-ecr: circleci/aws-ecr@7.3.0
+  aws-ecr: circleci/aws-ecr@8.2.1

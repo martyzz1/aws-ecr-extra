@@ -1,11 +1,11 @@
 description: Build a docker image
 parameters:
-  account-url:
-    default: AWS_ECR_ACCOUNT_URL
-    description: >
-      The Amazon ECR account URL that maps to an AWS account, e.g.
-      {awsAccountNum}.dkr.ecr.us-west-2.amazonaws.com
+  registry-id:
     type: env_var_name
+    default: AWS_ECR_REGISTRY_ID
+    description: >
+      The 12 digit AWS id associated with the ECR account.
+      This field is required
   dockerfile:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
@@ -39,12 +39,11 @@ parameters:
       or ecr-login are set to true.
     type: string
   region:
-    default: AWS_REGION
+    type: string
+    default: ${AWS_REGION}
     description: >
-      Name of env var storing your AWS region information, defaults to
-      AWS_REGION. Only required when skip-when-tags-exist or ecr-login are set
-      to true.
-    type: env_var_name
+      AWS region of ECR repository. Defaults to environment variable ${AWS_REGION}
+      Only required when skip-when-tags-exist or ecr-login are set
   repo:
     description: Name of an Amazon ECR repository
     type: string
@@ -66,38 +65,16 @@ steps:
         - aws-ecr/ecr-login:
             profile-name: <<parameters.profile-name>>
             region: <<parameters.region>>
+            registry-id: <<parameters.registry-id>>
   - run:
-      command: >
-        registry_id=$(echo $<<parameters.account-url>> | sed "s;\..*;;g")
-        docker --version
-
-        number_of_tags_in_ecr=0
-
-        docker_tag_args=""
-
-        IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
-
-        for tag in "${DOCKER_TAGS[@]}"; do
-          my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
-
-          if [ "<<parameters.skip-when-tags-exist>>" = "true" ]; then
-            docker_tag_exists_in_ecr=$(aws ecr describe-images --profile <<parameters.profile-name>> --registry-id $registry_id --repository-name "<<parameters.repo>>" --query "contains(imageDetails[].imageTags[], '$my_tag')")
-            if [ "$docker_tag_exists_in_ecr" = "true" ]; then
-              docker pull $<<parameters.account-url>>/<<parameters.repo>>:${my_tag}
-              let "number_of_tags_in_ecr+=1"
-            fi
-          fi
-          docker_tag_args="$docker_tag_args -t <<parameters.repo>>:$my_tag"
-        done
-
-        if [ "<<parameters.skip-when-tags-exist>>" = "false" ] || [
-        "<<parameters.skip-when-tags-exist>>" = "true" -a $number_of_tags_in_ecr
-        -lt ${#DOCKER_TAGS[@]} ]; then
-          docker build \
-            <<#parameters.extra-build-args>><<parameters.extra-build-args>><</parameters.extra-build-args>> \
-            -f <<parameters.path>>/<<parameters.dockerfile>> \
-            $docker_tag_args \
-            <<parameters.path>>
-        fi
-      name: Build docker image
-      no_output_timeout: <<parameters.no-output-timeout>>
+      environment:
+        ORB_ENV_REGISTRY_ID: <<parameters.registry-id>>
+        ORB_EVAL_REGION: <<parameters.region>>
+        ORB_ENV_TAGS: <<parameters.tag>>
+        ORB_ENV_REPO: <<parameters.repo>>
+        ORB_ENV_PROFILE: <<parameters.profile-name>>
+        ORB_ENV_SKIP_TAG_EXISTS: <<parameters.skip-when-tags-exist>>
+        ORB_ENV_EXTRA_BUILD_ARGS: <<parameters.extra-build-args>>
+        ORB_ENV_DOCKER_PATH: <<parameters.path>>
+        ORB_ENV_DOCKERILE: <<parameters.dockerfile>>
+      command: <<include(scripts/build-image-with-local-tags.sh)>>
