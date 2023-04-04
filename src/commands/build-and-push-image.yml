@@ -164,4 +164,5 @@ steps:
   - aws-ecr/push-image:
       repo: <<parameters.repo>>
       registry-id: <<parameters.registry-id>>
+      region: <<parameters.region>>
       tag: <<parameters.tag>>
