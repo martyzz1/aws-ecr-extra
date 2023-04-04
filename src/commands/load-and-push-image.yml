@@ -84,7 +84,7 @@ parameters:
       false.
     type: boolean
   remote-docker-version:
-    default: 19.03.13
+    default: 20.10.18
     description: Specific remote docker version
     type: string
   repo:
