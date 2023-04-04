@@ -1,16 +1,20 @@
 #!/bin/bash
-ORB_EVAL_REGION=$(eval echo "${ORB_EVAL_REGION}")
 
 if [ -z "${!ORB_ENV_REGISTRY_ID}" ]; then
   echo "The registry ID is not found. Please add the registry ID as an environment variable in CicleCI before continuing."
   exit 1
 fi
 
-ORB_VAL_ACCOUNT_URL="${!ORB_ENV_REGISTRY_ID}.dkr.ecr.${ORB_EVAL_REGION}.amazonaws.com"
+#shellcheck disable=SC2153
+ORB_VAL_REGION=$(eval echo "${ORB_EVAL_REGION}")
+#shellcheck disable=SC2153
+ORB_VAL_TAGS=$(eval echo "${ORB_EVAL_TAGS}")
+
+ORB_VAL_ACCOUNT_URL="${!ORB_ENV_REGISTRY_ID}.dkr.ecr.${ORB_VAL_REGION}.amazonaws.com"
 number_of_tags_in_ecr=0
 docker_tag_args=""
 
-IFS="," read -ra DOCKER_TAGS <<< "$ORB_ENV_TAGS"
+IFS="," read -ra DOCKER_TAGS <<< "$ORB_VAL_TAGS"
 
 for tag in "${DOCKER_TAGS[@]}"; do
   my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
@@ -30,6 +34,8 @@ echo "ORB_ENV_EXTRA_BUILD_ARGS=$ORB_ENV_EXTRA_BUILD_ARGS"
 echo "ORB_ENV_DOCKER_PATH=$ORB_ENV_DOCKER_PATH"
 echo "ORB_ENV_DOCKERILE=$ORB_ENV_DOCKERILE"
 echo "ORB_ENV_SKIP_TAG_EXISTS=$ORB_ENV_SKIP_TAG_EXISTS"
+echo "ORB_EVAL_TAGS=$ORB_EVAL_TAGS"
+echo "ORB_VAL_TAGS=$ORB_VAL_TAGS"
 echo "docker_tag_args=$docker_tag_args"
 echo "number_of_tags_in_ecr=$number_of_tags_in_ecr"
 
