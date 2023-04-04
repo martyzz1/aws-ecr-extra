@@ -16,5 +16,6 @@ parameters:
 # docker:
 machine:
   image: <<parameters.image>>
+  docker_layer_caching: <<parameters.use-docker-layer-caching>>
 
 resource_class: <<parameters.resource-class>>
