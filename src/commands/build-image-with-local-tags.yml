@@ -71,7 +71,7 @@ steps:
       environment:
         ORB_ENV_REGISTRY_ID: <<parameters.registry-id>>
         ORB_EVAL_REGION: <<parameters.region>>
-        ORB_ENV_TAGS: <<parameters.tag>>
+        ORB_EVAL_TAGS: <<parameters.tag>>
         ORB_ENV_REPO: <<parameters.repo>>
         ORB_ENV_PROFILE: <<parameters.profile-name>>
         ORB_ENV_SKIP_TAG_EXISTS: <<parameters.skip-when-tags-exist>>
