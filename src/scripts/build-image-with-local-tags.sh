@@ -15,7 +15,7 @@ IFS="," read -ra DOCKER_TAGS <<< "$ORB_ENV_TAGS"
 for tag in "${DOCKER_TAGS[@]}"; do
   my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
 
-  if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "true" ]; then
+  if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "1" ]; then
 	docker_tag_exists_in_ecr=$(aws ecr describe-images --profile "$ORB_ENV_PROFILE" --registry-id "$ORB_ENV_REGISTRY_ID" --repository-name "$ORB_ENV_REPO" --query "contains(imageDetails[].imageTags[], '$my_tag')")
 	if [ "$docker_tag_exists_in_ecr" = "true" ]; then
 	  docker pull "$ORB_VAL_ACCOUNT_URL/$ORB_ENV_REPO:${my_tag}"
@@ -33,7 +33,7 @@ echo "ORB_ENV_SKIP_TAG_EXISTS=$ORB_ENV_SKIP_TAG_EXISTS"
 echo "docker_tag_args=$docker_tag_args"
 echo "number_of_tags_in_ecr=$number_of_tags_in_ecr"
 
-if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "false" ] || [ "$ORB_ENV_SKIP_TAG_EXISTS" = "true" ] && [ $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
+if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "0" ] || [ "$ORB_ENV_SKIP_TAG_EXISTS" = "1" ] && [ $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
 
   #shellcheck disable=2086
   docker build \
