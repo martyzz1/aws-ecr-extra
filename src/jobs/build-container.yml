@@ -134,6 +134,10 @@ parameters:
     description: >
       Workspace root path that is either an absolute path or a path relative
       to the working directory. Defaults to '.' (the working directory)
+  resource_class:
+        type: string
+        default: medium
+resource_class: << parameters.resource_class >>
 executor: <<parameters.executor>>
 # docker:
 #   - image: cimg/base:2022.03
