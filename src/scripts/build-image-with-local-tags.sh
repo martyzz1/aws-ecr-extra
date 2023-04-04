@@ -26,12 +26,15 @@ for tag in "${DOCKER_TAGS[@]}"; do
   docker_tag_args="$docker_tag_args -t $ORB_ENV_REPO:$my_tag"
 done
 
+echo "ORB_ENV_EXTRA_BUILD_ARGS=$ORB_ENV_EXTRA_BUILD_ARGS"
+echo "ORB_ENV_DOCKER_PATH=$ORB_ENV_DOCKER_PATH"
+echo "ORB_ENV_DOCKERILE=$ORB_ENV_DOCKERILE"
+echo "ORB_ENV_SKIP_TAG_EXISTS=$ORB_ENV_SKIP_TAG_EXISTS"
+echo "docker_tag_args=$docker_tag_args"
+echo "number_of_tags_in_ecr=$number_of_tags_in_ecr"
+
 if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "false" ] || [ "$ORB_ENV_SKIP_TAG_EXISTS" = "true" ] && [ $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
 
-  echo "ORB_ENV_EXTRA_BUILD_ARGS=$ORB_ENV_EXTRA_BUILD_ARGS"
-  echo "ORB_ENV_DOCKER_PATH=$ORB_ENV_DOCKER_PATH"
-  echo "ORB_ENV_DOCKERILE=$ORB_ENV_DOCKERILE"
-  echo "docker_tag_args=$docker_tag_args"
   #shellcheck disable=2086
   docker build \
 	$ORB_ENV_EXTRA_BUILD_ARGS\
