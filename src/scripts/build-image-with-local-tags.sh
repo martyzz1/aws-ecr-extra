@@ -20,6 +20,7 @@ for tag in "${DOCKER_TAGS[@]}"; do
 	if [ "$docker_tag_exists_in_ecr" = "true" ]; then
 	  docker pull "$ORB_VAL_ACCOUNT_URL/$ORB_ENV_REPO:${my_tag}"
 	  ((number_of_tags_in_ecr+=1))
+	  echo "number_of_tags_in_ecr=$number_of_tags_in_ecr"
 	fi
   fi
   docker_tag_args="$docker_tag_args -t $ORB_ENV_REPO:$my_tag"
@@ -27,6 +28,10 @@ done
 
 if [ "$ORB_ENV_SKIP_TAG_EXISTS" = "false" ] || [ "$ORB_ENV_SKIP_TAG_EXISTS" = "true" ] && [ $number_of_tags_in_ecr -lt ${#DOCKER_TAGS[@]} ]; then
 
+  echo "ORB_ENV_EXTRA_BUILD_ARGS=$ORB_ENV_EXTRA_BUILD_ARGS"
+  echo "ORB_ENV_DOCKER_PATH=$ORB_ENV_DOCKER_PATH"
+  echo "ORB_ENV_DOCKERILE=$ORB_ENV_DOCKERILE"
+  echo "docker_tag_args=$docker_tag_args"
   #shellcheck disable=2086
   docker build \
 	$ORB_ENV_EXTRA_BUILD_ARGS\
