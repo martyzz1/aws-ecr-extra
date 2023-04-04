@@ -78,14 +78,16 @@ steps:
         IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
 
         for tag in "${DOCKER_TAGS[@]}"; do
+          my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
+
           if [ "<<parameters.skip-when-tags-exist>>" = "true" ]; then
-            docker_tag_exists_in_ecr=$(aws ecr describe-images --profile <<parameters.profile-name>> --registry-id $registry_id --repository-name "<<parameters.repo>>" --query "contains(imageDetails[].imageTags[], '$tag')")
+            docker_tag_exists_in_ecr=$(aws ecr describe-images --profile <<parameters.profile-name>> --registry-id $registry_id --repository-name "<<parameters.repo>>" --query "contains(imageDetails[].imageTags[], '$my_tag')")
             if [ "$docker_tag_exists_in_ecr" = "true" ]; then
-              docker pull $<<parameters.account-url>>/<<parameters.repo>>:${tag}
+              docker pull $<<parameters.account-url>>/<<parameters.repo>>:${my_tag}
               let "number_of_tags_in_ecr+=1"
             fi
           fi
-          docker_tag_args="$docker_tag_args -t <<parameters.repo>>:$tag"
+          docker_tag_args="$docker_tag_args -t <<parameters.repo>>:$my_tag"
         done
 
         if [ "<<parameters.skip-when-tags-exist>>" = "false" ] || [

@@ -22,7 +22,8 @@ steps:
 
         IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
         for tag in "${DOCKER_TAGS[@]}"; do
-          TAGS+=("<<parameters.repo>>:$tag")
+          my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
+          TAGS+=("<<parameters.repo>>:$my_tag")
         done
 
         echo "docker save --output \"image.tar\" ${TAGS[@]}"
