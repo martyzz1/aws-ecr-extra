@@ -67,6 +67,7 @@ steps:
             region: <<parameters.region>>
             registry-id: <<parameters.registry-id>>
   - run:
+      name: Build Image with Local Tags
       environment:
         ORB_ENV_REGISTRY_ID: <<parameters.registry-id>>
         ORB_EVAL_REGION: <<parameters.region>>
