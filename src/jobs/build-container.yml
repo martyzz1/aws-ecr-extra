@@ -173,6 +173,7 @@ steps:
       path: <<parameters.path>>
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
+      registry-id: <<parameters.registry-id>>
       repo: <<parameters.repo>>
       skip-when-tags-exist: <<parameters.skip-when-tags-exist>>
       tag: <<parameters.tag>>
