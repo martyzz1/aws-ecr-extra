@@ -163,7 +163,7 @@ steps:
   #       echo "export FULL_IMAGE_TAG='${IMAGE_TAG}.${CIRCLE_BUILD_NUM}'" >> new-env-vars
   #       cat new-env-vars >> $BASH_ENV
   # - setup_remote_docker:
-  #     version: 19.03.13
+  #     version: 20.10.18
   #     docker_layer_caching: true
   -  build-image-with-local-tags:
       dockerfile: <<parameters.dockerfile>>

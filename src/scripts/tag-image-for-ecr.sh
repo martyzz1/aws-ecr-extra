@@ -11,12 +11,12 @@ if [ -z "${!ORB_ENV_REGISTRY_ID}" ]; then
 fi
 
 if [ "$ORB_EVAL_REGION" == "us-east-1" ]; then
-	echo "ORB_EVAL_REGION is 'us-east-1'"
+	echo "ORB_EVAL_REGION 1 is 'east'"
 fi
 if [ "$ORB_EVAL_REGION" == "eu-west-1" ]; then
-	echo "ORB_EVAL_REGION is 'eu-west-1'"
+	echo "ORB_EVAL_REGION 2 is 'west'"
 else
-	echo "ORB_EVAL_REGION is Weird"
+	echo "ORB_EVAL_REGION 3 is Weird"
 fi
 
 IFS="," read -ra DOCKER_TAGS <<< "${ORB_EVAL_TAG}"
