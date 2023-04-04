@@ -10,8 +10,17 @@ if [ -z "${!ORB_ENV_REGISTRY_ID}" ]; then
   exit 1
 fi
 
+if [ "$ORB_EVAL_REGION" == "us-east-1" ]; then
+	echo "ORB_EVAL_REGION is 'us-east-1'"
+fi
+if [ "$ORB_EVAL_REGION" == "eu-west-1" ]; then
+	echo "ORB_EVAL_REGION is 'eu-west-1'"
+else
+	echo "ORB_EVAL_REGION is Weird"
+fi
+
 IFS="," read -ra DOCKER_TAGS <<< "${ORB_EVAL_TAG}"
 for tag in "${DOCKER_TAGS[@]}"; do
-	echo "Tagging with tag $tag"
+	echo "Tagging with tag \"$ORB_EVAL_REPO:${tag}\" \"$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${tag}\""
 	docker tag "$ORB_EVAL_REPO:${tag}" "$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${tag}"
 done
