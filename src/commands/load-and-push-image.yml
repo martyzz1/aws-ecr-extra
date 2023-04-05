@@ -25,7 +25,6 @@ parameters:
     description: >
       The 12 digit AWS id associated with the ECR account.
       This field is required
-
   checkout:
     default: true
     description: |
@@ -129,6 +128,7 @@ steps:
       image-file: << parameters.image-file >>
   - tag-image-for-ecr:
       registry-id: <<parameters.registry-id>>
+      region: <<parameters.region>>
       repo: <<parameters.repo>>
       tag: <<parameters.tag>>
   - aws-ecr/push-image:
