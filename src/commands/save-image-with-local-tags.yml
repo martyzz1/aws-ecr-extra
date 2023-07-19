@@ -16,15 +16,9 @@ parameters:
 
 steps:
   - run:
-      name: Save and tag output for the given tags
-      command: |
-        TAGS=()
-
-        IFS="," read -ra DOCKER_TAGS \<<< "<< parameters.tag >>"
-        for tag in "${DOCKER_TAGS[@]}"; do
-          my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
-          TAGS+=("<<parameters.repo>>:$my_tag")
-        done
-
-        echo "docker save --output \"image.tar\" ${TAGS[@]}"
-        docker save --output "<< parameters.image-file >>" ${TAGS[@]}
+      name: Save Image with Local Tags
+      environment:
+        ORB_EVAL_TAG: <<parameters.tag>>
+        ORB_EVAL_REPO: <<parameters.repo>>
+        ORB_ENV_IMAGE_FILE: <<parameters.image-file>>
+      command: <<include(scripts/save-image-with-local-tags.sh)>>
