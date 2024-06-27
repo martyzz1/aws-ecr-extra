@@ -19,6 +19,7 @@ steps:
               if [ -e "<<parameters.env-var-file>>" ]; then
                 echo "Restoring custom vars"
                 cat <<parameters.env-var-file>> >> $BASH_ENV
+                source $BASH_ENV
                 cat <<parameters.env-var-file>>
               else
                 echo "no custom env-var-file found. skipping"
