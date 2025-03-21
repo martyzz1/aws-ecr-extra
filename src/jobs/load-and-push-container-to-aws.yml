@@ -133,13 +133,6 @@ steps:
             at: <<parameters.workspace-root>>
         - restore-custom-env-var:
             env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
-  # - when:
-  #     condition: <<parameters.setup-remote-docker>>
-  #     steps:
-  #       - setup_remote_docker:
-  #           docker_layer_caching: <<parameters.remote-docker-layer-caching>>
-  #           version: <<parameters.remote-docker-version>>
-
   - load-and-push-image:
       registry-id: <<parameters.registry-id>>
       aws-access-key-id: <<parameters.aws-access-key-id>>

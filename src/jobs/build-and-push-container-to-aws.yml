@@ -103,12 +103,6 @@ parameters:
     default: true
     description: Should the created repo be security scanned on push?
     type: boolean
-  setup-remote-docker:
-    default: false
-    description: >
-      Setup and use CircleCI's remote Docker environment for Docker and
-      docker-compose commands? Not required if using the default executor
-    type: boolean
   skip-when-tags-exist:
     default: false
     description: Whether to skip image building if all specified tags already exist in ECR
@@ -149,12 +143,6 @@ steps:
             at: <<parameters.workspace-root>>
         - restore-custom-env-var:
             env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
-  - when:
-      condition: <<parameters.setup-remote-docker>>
-      steps:
-        - setup_remote_docker:
-            version: <<parameters.remote-docker-version>>
-            docker_layer_caching: <<parameters.remote-docker-layer-caching>>
   - aws-ecr/ecr-login:
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
