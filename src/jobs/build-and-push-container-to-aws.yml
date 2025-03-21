@@ -147,8 +147,6 @@ steps:
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
       registry-id: <<parameters.registry-id>>
-      aws-access-key-id: <<parameters.aws-access-key-id>>
-      aws-secret-access-key: <<parameters.aws-secret-access-key>>
   - build-image-with-local-tags:
       dockerfile: <<parameters.dockerfile>>
       ecr-login: <<parameters.ecr-login>>
