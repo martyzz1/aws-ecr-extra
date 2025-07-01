@@ -131,6 +131,11 @@ parameters:
     description: >
       Workspace root path that is either an absolute path or a path relative
       to the working directory. Defaults to '.' (the working directory)
+  workspace-name:
+    type: string
+    default: "workspace"
+    description: >
+      Workspace name that contains the stored workspace. Defaults to 'workspace'
   resource_class:
     type: string
     default: medium
@@ -147,25 +152,10 @@ steps:
       condition: <<parameters.attach-workspace>>
       steps:
         - attach_workspace:
-            at: <<parameters.workspace-root>>
+            at: /tmp/<<parameters.workspace-name>>
         - restore-custom-env-var:
-            env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
-  # - when:
-  #     condition: <<parameters.setup-remote-docker>>
-  #     steps:
-  #       - setup_remote_docker:
-  #           docker_layer_caching: <<parameters.remote-docker-layer-caching>>
-  #           version: <<parameters.remote-docker-version>>
-  # - checkout
-  # - run:
-  #     name: "Persist CIRCLE_BUILD_NUM environment variables"
-  #     command: |
-  #       echo "export FULL_IMAGE_TAG='${IMAGE_TAG}.${CIRCLE_BUILD_NUM}'" >> new-env-vars
-  #       cat new-env-vars >> $BASH_ENV
-  # - setup_remote_docker:
-  #     version: 20.10.18
-  #     docker_layer_caching: true
-  -  build-image-with-local-tags:
+            env-var-file: /tmp/<<parameters.workspace-name>>/<<parameters.env-var-file>>
+  - build-image-with-local-tags:
       dockerfile: <<parameters.dockerfile>>
       ecr-login: <<parameters.ecr-login>>
       extra-build-args: <<parameters.extra-build-args>>
@@ -183,7 +173,7 @@ steps:
       image-file: <<parameters.image-file>>
       tag: <<parameters.tag>>
   - persist_to_workspace:
-      root: .
+      root:  .
       paths:
         - <<parameters.image-file>>
         # - new-env-vars

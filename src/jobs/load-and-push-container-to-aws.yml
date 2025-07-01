@@ -114,6 +114,11 @@ parameters:
       A comma-separated string containing docker image tags to build and push
       (default = latest)
     type: string
+  workspace-name:
+    type: string
+    default: "workspace"
+    description: >
+      Workspace name that contains the stored workspace. Defaults to 'workspace'
   workspace-root:
     type: string
     default: "."
@@ -130,9 +135,9 @@ steps:
       condition: <<parameters.attach-workspace>>
       steps:
         - attach_workspace:
-            at: <<parameters.workspace-root>>
+            at: /tmp/<<parameters.workspace-name>>
         - restore-custom-env-var:
-            env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
+            env-var-file: /tmp/<<parameters.workspace-name>>/<<parameters.env-var-file>>
   - load-and-push-image:
       registry-id: <<parameters.registry-id>>
       aws-access-key-id: <<parameters.aws-access-key-id>>

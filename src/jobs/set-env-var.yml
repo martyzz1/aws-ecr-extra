@@ -6,6 +6,11 @@ parameters:
     description: >
       Boolean for whether or not to attach to an existing workspace. Default
       is false.
+  workspace-name:
+    type: string
+    default: "workspace"
+    description: >
+      Workspace name that contains the stored workspace. Defaults to 'workspace'
   env-var-file:
     default: 'custom-env-vars'
     description: >-
@@ -43,23 +48,20 @@ steps:
       condition: <<parameters.attach-workspace>>
       steps:
         - attach_workspace:
-            at: <<parameters.workspace-root>>
-        - set-env-var:
-            env-var: << parameters.env-var >>
-            env-value: << parameters.env-value >>
-            env-var-file: <<parameters.workspace-root>>/<< parameters.env-var-file >>
+            at: /tmp/<<parameters.workspace-name>>
   - when:
       condition:
         not: <<parameters.attach-workspace>>
       steps:
-        - set-env-var:
-            env-var: << parameters.env-var >>
-            env-value: << parameters.env-value >>
-            env-var-file: << parameters.env-var-file >>
+        - run: mkdir -p /tmp/<< parameters.workspace-name >>
+  - set-env-var:
+      env-var: << parameters.env-var >>
+      env-value: << parameters.env-value >>
+      env-var-file: /tmp/<<parameters.workspace-name>>/<< parameters.env-var-file >>
   - when:
       condition: <<parameters.persist-to-workspace>>
       steps:
         - persist_to_workspace:
-            root: << parameters.workspace-root >>
+            root: /tmp/<< parameters.workspace-name >>
             paths:
               - << parameters.env-var-file >>

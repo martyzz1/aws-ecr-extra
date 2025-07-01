@@ -125,6 +125,11 @@ parameters:
     description: >
       Workspace root path that is either an absolute path or a path relative
       to the working directory. Defaults to '.' (the working directory)
+  workspace-name:
+    type: string
+    default: "workspace"
+    description: >
+      Workspace name that contains the stored workspace. Defaults to 'workspace'
   resource_class:
     type: string
     default: medium
@@ -140,9 +145,9 @@ steps:
       condition: <<parameters.attach-workspace>>
       steps:
         - attach_workspace:
-            at: <<parameters.workspace-root>>
+            at: /tmp/<<parameters.workspace-name>>
         - restore-custom-env-var:
-            env-var-file: <<parameters.workspace-root>>/<<parameters.env-var-file>>
+            env-var-file: /tmp/<<parameters.workspace-name>>/<<parameters.env-var-file>>
   - aws-ecr/ecr-login:
       profile-name: <<parameters.profile-name>>
       region: <<parameters.region>>
