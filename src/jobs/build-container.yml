@@ -143,6 +143,8 @@ resource_class: << parameters.resource_class >>
 executor: <<parameters.executor>>
 # docker:
 #   - image: cimg/base:2022.03
+environment:
+  DOCKER_BUILDKIT: 1
 steps:
   - when:
       condition: <<parameters.checkout>>

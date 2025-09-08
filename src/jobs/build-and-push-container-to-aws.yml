@@ -136,6 +136,8 @@ parameters:
 resource_class: << parameters.resource_class >>
 
 executor: <<parameters.executor>>
+environment:
+  DOCKER_BUILDKIT: 1
 steps:
   - when:
       condition: <<parameters.checkout>>
