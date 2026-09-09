@@ -21,9 +21,11 @@ else
 fi
 
 IFS="," read -ra DOCKER_TAGS <<< "${ORB_EVAL_TAGS}"
-for tag in "${DOCKER_TAGS[@]}"; do
-	my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g' )
+source_tag=$(eval echo "${DOCKER_TAGS[0]}" | sed 's/[^a-z0-9.-]/-/g')
 
-	echo "Tagging with tag \"$ORB_EVAL_REPO:${my_tag}\" \"$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${my_tag}\""
-	docker tag "$ORB_EVAL_REPO:${my_tag}" "$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${my_tag}"
+for tag in "${DOCKER_TAGS[@]}"; do
+	my_tag=$(eval echo "${tag}" | sed 's/[^a-z0-9.-]/-/g')
+
+	echo "Tagging \"$ORB_EVAL_REPO:${source_tag}\" as \"$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${my_tag}\""
+	docker tag "$ORB_EVAL_REPO:${source_tag}" "$ORB_VAL_ACCOUNT_URL/$ORB_EVAL_REPO:${my_tag}"
 done
